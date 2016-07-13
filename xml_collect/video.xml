@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- time 分钟 -->
+<root>
+	<video id="1" time="1" />
+	<video id="2" reward="1-2000"/>
+	<time id="3">
+		<text id="1" text="hello2"/>
+		<text id="2" text="world1"/>
+	</time>
+	
+
+</root>
