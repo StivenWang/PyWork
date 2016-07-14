@@ -1,16 +1,20 @@
 # -*- coding:utf-8 -*-
+# @auther:wangxiang
+# date:2016/07/11
+
 '''
-预处理xml文件（导出json格式）
+预处理xml文件（导出dict格式）
 '''
+
 from xml.etree import ElementTree as ET
-import sys, re
 
 
 class Export_dict:
-    def __init__(self, xml_name, xml_dict, xml_child_dict):
+    def __init__(self, xml_name):
         self.xml_name = xml_name
-        self.xml_dict = xml_dict  # 标签属内容dict
-        self.xml_child_dict = xml_child_dict  # 子标签dict
+        self.xml_dict = {}  # 标签属内容dict
+        self.xml_child_dict = {}  # 子标签dict
+        self.xml_transit_dict = {}  # ret
 
     def xml_analysis_root(self):
         '''
@@ -36,45 +40,32 @@ class Export_dict:
                         self.xml_child_dict[s.tag] = i.tag.split()
         self.xml_child_dict.pop(result.tag)
 
-
     def xml_text_dict(self):
         '''
         # 获取标签:标签内容dict
         :return: 获取标签:标签内容dict
         '''
-        xml_transit_dict = {}
         result = self.xml_analysis_root()
         for i in result.iter():
-            if i.tag in xml_transit_dict.keys() and sorted(i.items()) != sorted(xml_transit_dict[i.tag]):
+            if i.tag in self.xml_transit_dict.keys() and sorted(i.items()) != sorted(self.xml_transit_dict[i.tag]):
                 for attrib in i.items():
-                    xml_transit_dict[i.tag].append(attrib)
+                    self.xml_transit_dict[i.tag].append(attrib)
             else:
-                xml_transit_dict[i.tag] = i.items()
-        for k, v in xml_transit_dict.items():
+                self.xml_transit_dict[i.tag] = i.items()
+        for k, v in self.xml_transit_dict.items():
             self.xml_dict[k] = dict(v)
         self.xml_dict.pop(result.tag)
-        # return self.xml_dict
-
 
     def xml_dict_merge(self):
-        merge_v = []
-        for k in self.xml_child_dict.keys():
-            if self.xml_dict.has_key(k):
-                merge_v.append(self.xml_dict[k])
-                merge_v.append(self.xml_child_dict[k])
-                self.xml_dict[k] = merge_v
-        return self.xml_dict
-
-
-
-if __name__ == '__main__':
-    ret = {}
-    val = {}
-    xml_export_dict = Export_dict('video.xml', ret, val)
-    xml_export_dict.xml_text_dict()
-    xml_export_dict.xml_tag_dict()
-    r = xml_export_dict.xml_dict_merge()
-    for k,v in r.items():
-        print k,v
-
-
+        '''
+        # dict合并(子标签，内容合并为标签key)
+        :return:
+        '''
+        self.xml_analysis_root(), self.xml_tag_dict(), self.xml_text_dict()
+        for k, v in self.xml_dict.items():
+            self.xml_transit_dict[k] = [v]
+        for i in self.xml_child_dict.keys():
+            if i in self.xml_transit_dict.keys():
+                self.xml_transit_dict[i].append(self.xml_child_dict[i])
+        self.xml_transit_dict.pop(self.xml_analysis_root().tag)
+        return self.xml_transit_dict

@@ -2,11 +2,21 @@
 <!-- time 分钟 -->
 <root>
 	<video id="1" time="1" />
-	<video id="2" reward="1-2000"/>
+	<video id="2" reward="1-2000">
+		<apple id="14" text="32rew"/>
+		<apple id="22" text="apple23">
+				<shaw id="45" text="orng"/>
+				<sam id="45" text="orng"/>
+				<Stiven id="45" text="orng"/>
+		</apple>
+		<lenovo id="1" name="python" />
+		<vivo id="1" name="python" />
+	</video>
 	<time id="3">
 		<text id="1" text="hello2"/>
 		<text id="2" text="world1"/>
 	</time>
+	<class id="1" name="python" />
 	
 
 </root>
