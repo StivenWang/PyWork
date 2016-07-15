@@ -44,7 +44,6 @@ class Export_dict:
         '''
         # 获取标签:标签内容dict
         :return: 获取标签:标签内容dict
-        
         '''
         result = self.xml_analysis_root()
         for i in result.iter():

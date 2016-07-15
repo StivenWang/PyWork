@@ -6,14 +6,14 @@
 由xml产生各种格式文件
 '''
 import os, time, re
+import sys
 from  xml_to_dict import Export_dict
 
 
-class File_handle:
+class File_handle(Export_dict):
+
     def __init__(self):
         pass
-
-
 
 
     def xml_to_as(self):
@@ -21,10 +21,10 @@ class File_handle:
         # 产生as文件
         :return:
         '''
-        val = Export_dict('video.xml')  # 文件名待处理
+        val = Export_dict(self.xml_name)
         val = val.xml_dict_merge()
         for k, v in val.items():
-            as_text_list = ['package client.config_data.shaw.data', '{', '\tpublic class TextVO', '\t{', '\t}', '}']
+            as_text_list = ['package client.config_data.{}.data'.format(re.split('\W',self.xml_name)[-2]), '{', '\tpublic class TextVO', '\t{', '\t}', '}']
             for i in v:
                 if isinstance(i, list):
                     for s in i:
@@ -35,7 +35,6 @@ class File_handle:
                         elif len(i) > 1:
                             rets = '{},{}:{}'.format(as_text_list[-3].split(':')[0], s, as_text_list[-3].split(':')[1])
                             as_text_list[-3] = rets
-
                 else:
                     for key, value in i.items():
                         result = re.findall(r'^[+-]?\d+\d*$', value)
@@ -57,5 +56,9 @@ class File_handle:
 
 
 if __name__ == '__main__':
-    ret = File_handle()
-    ret.xml_to_as()
+    try:
+        ret = File_handle()
+        ret.xml_name = sys.argv[1]
+        ret.xml_to_as()
+    except IndexError as e:
+        print(u'缺少xml文件，程序已退出'.encode('utf-8'))
