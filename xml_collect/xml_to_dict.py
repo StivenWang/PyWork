@@ -40,6 +40,8 @@ class Export_dict:
                         self.xml_child_dict[s.tag] = i.tag.split()
         self.xml_child_dict.pop(result.tag)
 
+
+
     def xml_text_dict(self):
         '''
         # 获取标签:标签内容dict
@@ -56,6 +58,8 @@ class Export_dict:
         for k, v in self.xml_transit_dict.items():
             self.xml_dict[k] = dict(v)
         self.xml_dict.pop(result.tag)
+
+
 
     def xml_dict_merge(self):
         '''
