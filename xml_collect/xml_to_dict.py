@@ -46,7 +46,6 @@ class Export_dict:
         '''
         # 获取标签:标签内容dict
         :return: 获取标签:标签内容dict
-        
         '''
         result = self.xml_analysis_root()
         for i in result.iter():
@@ -74,3 +73,4 @@ class Export_dict:
                 self.xml_transit_dict[i].append(self.xml_child_dict[i])
         self.xml_transit_dict.pop(self.xml_analysis_root().tag)
         return self.xml_transit_dict
+
